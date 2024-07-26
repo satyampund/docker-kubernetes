@@ -1,0 +1,24 @@
+#In the server.js we have used app.listen(process.env.PORT) 
+docker run -d --name feedback -e PORT=80 --rm -p 8000:80 feedback-node
+
+#To see the saved file
+<ip-address>:8000/feedback/<title>.txt
+
+#To persist data
+ docker run -d --name feedback -e PORT=80 --rm -p 8000:80 -v feedback:/app/feedback <image-name>
+
+
+#Bind mount - It will reflect changes as soon as we do the changes in the code
+
+docker run -d --name feedback -e PORT=80 -p 8000:80 --rm -v feedback:/app/feedback -v "/home/ubuntu/docker-kubernetes/5.Data-Volume:/app" -v /app/node_modules feedback-img:v2
+
+Before this make sure docker has access to your folder path 
+ls -ld /home/ubuntu/docker-kubernetes/5.Data-Volume
+sudo chown -R $USER:docker /home/ubuntu/docker-kubernetes/5.Data-Volume
+sudo chmod -R 775 /home/ubuntu/docker-kubernetes/5.Data-Volume
+sudo reboot
+
+We have used nodemon to see the changes as soon as we make. so need to restart the node server
+
+We can use .env file to access the env variables
+docker run -d --name feedback --env-file ./.env -p 8000:80 --rm -v feedback:/app/feedback -v "/home/ubuntu/docker-kubernetes/5.Data-Volume:/app" -v /app/node_modules feedback-img
