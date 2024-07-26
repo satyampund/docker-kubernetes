@@ -1,0 +1,8 @@
+#To build an image
+docker build -t python-img .
+
+#To build the container from image
+docker container run -it python-img
+
+#After stopping the container you can attach it again interatively
+docker start -ai <container_name>
