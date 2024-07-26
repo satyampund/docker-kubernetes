@@ -1,0 +1,8 @@
+#To remove the container as soon as we stop it
+docker run -d -p 8000:80 --rm <container_id>
+
+#We can copy files inside containers
+docker cp <source> <container_name>:/<destination>
+docker cp dummy/ server-container:/test
+
+
