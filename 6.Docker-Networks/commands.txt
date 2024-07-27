@@ -1,0 +1,7 @@
+docker build -t favorites-node .
+
+docker network create favorites-net 
+
+docker run -d --name mongodb --network favorites-net mongo
+
+docker run -d --name favorites --network favorites-net --rm -p 8000:3000 favorites-node
