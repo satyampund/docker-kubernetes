@@ -1,0 +1,67 @@
+------------------Level 1--------------------------
+
+#mongdb
+docker run --name mongodb --rm -d -p 27017:27017 mongo
+
+#backend image
+docker build -t goals-node .
+
+#backend container
+docker run --name goals-backend --rm -d -p 80:80 goals-node
+
+#frontend image
+docker build -t goals-react .
+
+#frontend container
+docker run --name goals-frontend --rm -d -it -p 3000:3000 goals-react
+
+------------------Level 2--------------------------
+
+#create network
+docker network create goals-net
+
+#mongdb
+docker run --name mongodb --rm -d --network goals-net mongo
+
+#backend image
+docker build -t goals-node .
+
+#backend container
+#before running it make sure to put mongodb i.e. container name inside the url
+docker run --name goals-backend --rm -d -p 80:80 --network goals-net goals-node
+
+#we don't need to specify the container name in the frontend urls
+
+#frontend image
+docker build -t goals-react .
+
+#For frontend we don't need network
+
+#frontend container
+docker run --name goals-frontend --rm -d -it -p 3000:3000 goals-react
+
+------------------Level 3--------------------------
+
+#create network
+docker network create goals-net
+
+#mongdb
+docker run --name mongodb -v data:/data/db --rm -d --network goals-net -e MONGO_INITDB_ROOT_USERNAME=satyam -e MONGO_INITDB_ROOT_PASSWORD=testpass mongo
+
+
+#backend image
+docker build -t goals-node .
+
+#backend container
+docker run --name goals-backend -v "/home/ubuntu/docker-kubernetes/7.Multi-Container/backend:/app" -v logs:/app/logs -v /app/node_modules -e MONGODB_USERNAME=satyam -e MONGODB_PASSWORD=testpass --rm -d -p 80:80 --network goals-net goals-node
+
+
+#frontend image
+docker build -t goals-react .
+
+#frontend container
+docker run --name goals-frontend -v /home/ubuntu/docker-kubernetes/7.Multi-Container/frontend/src:/app/src --rm -d -it -p 3000:3000 goals-react
+
+
+
+
