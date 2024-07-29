@@ -53,15 +53,11 @@ docker run --name mongodb -v data:/data/db --rm -d --network goals-net -e MONGO_
 docker build -t goals-node .
 
 #backend container
-docker run --name goals-backend -v "/home/ubuntu/docker-kubernetes/7.Multi-Container/backend:/app" -v logs:/app/logs -v /app/node_modules -e MONGODB_USERNAME=satyam -e MONGODB_PASSWORD=testpass --rm -d -p 80:80 --network goals-net goals-node
+docker run --name goals-backend -v /home/ubuntu/docker-kubernetes/7.Multi-Container/backend:/app -v logs:/app/logs -v /app/node_modules -e MONGODB_USERNAME=satyam -e MONGODB_PASSWORD=testpass --rm -d -p 80:80 --network goals-net goals-node
 
 
 #frontend image
 docker build -t goals-react .
 
 #frontend container
-docker run --name goals-frontend -v /home/ubuntu/docker-kubernetes/7.Multi-Container/frontend/src:/app/src --rm -d -it -p 3000:3000 goals-react
-
-
-
-
+docker run --name goals-frontend -v /home/ubuntu/docker-kubernetes/7.Multi-Container/frontend/src:/app/src --rm -d -it -p 3000:3000 --network goals-net goals-react
