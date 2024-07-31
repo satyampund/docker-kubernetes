@@ -1,0 +1,5 @@
+#To make the node utility container
+docker compose run --rm npm init
+
+#To install the dependencies
+docker compose run --rm npm install express.js
